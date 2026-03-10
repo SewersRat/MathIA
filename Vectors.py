@@ -2,8 +2,8 @@
 def mainMenu():
     print("1. Vecteurs")
     print("2. Matrices")
-    print("3. Quitter")
-    print("4. Moyenne de deux vecteurs")
+    print("3. Moyenne de deux vecteurs")
+    print("4. Quitter")
     print("Veuillez choisir une option: ")
     choice = input()
     if choice == "1":
@@ -11,9 +11,9 @@ def mainMenu():
     elif choice == "2":
         matrices()
     elif choice == "3":
-        print("Au revoir!")
-    elif choice == "4":
         Moyenne()
+    elif choice == "4":
+        print("Au revoir!")
     else:
         print("Option invalide, veuillez réessayer.")
         mainMenu()
@@ -61,5 +61,8 @@ def Moyenne():
     print("Equation : y =", a, "x +", b)
     input("Appuyez sur Entrée pour revenir au menu principal...")
     mainMenu()
+
+    
+    
 
 mainMenu()
