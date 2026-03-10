@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 BANNER = """⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⠿⣷⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣤⣤⣴⣿⠟⠁⠀⠈⠛⠿⣿⣿⣶⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -28,9 +30,9 @@ def mainMenu():
     print("2. DataSet2")
     print("3. DataSet3")
     print("4. DataSet4")
-    print("5. Exit")
+    print("5. Quitter")
 
-    choice = input("Enter your choice: ")
+    choice = input("Veuillez entrer votre choix (1-5) : ")
 
     if choice == "1":
         dataSet1()
@@ -41,12 +43,12 @@ def mainMenu():
     elif choice == "4":
         dataSet4()
     elif choice == "5":
-        print("Exiting...")
+        print("En train de quitter...")
     else:
-        print("Invalid choice. Please try again.")
+        print("Choix non reconnu, veuillez réessayer.")
         mainMenu()
 
-def TreatDataSet(x, y):
+def TreatDataSet(x, y, n):
     moyenne_x = sum(x) / len(x)
     moyenne_y = sum(y) / len(y)
 
@@ -64,24 +66,36 @@ def TreatDataSet(x, y):
 
     MSE = sum((y[i] - (a * x[i] + b)) ** 2 for i in range(len(x))) / len(x)
     print("MSE =", MSE)
-
-    input("Appuyez sur Entrée pour revenir au menu principal...")
+    graph(x, y, a, b, MSE, n)
 
     mainMenu()
 def dataSet1():
     x = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
     y = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
-    TreatDataSet(x, y)
+    TreatDataSet(x, y, 1)
 def dataSet2():
     x = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
     y = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
-    TreatDataSet(x, y)
+    TreatDataSet(x, y, 2)
 def dataSet3():
     x = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
     y = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
-    TreatDataSet(x, y)
+    TreatDataSet(x, y, 3)
 def dataSet4():
     x = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
     y = [6.58, 5.63, 7.24, 6.95, 7.46, 8.11, 6.13, 3.83, 7.21, 5.39, 4.26]
-    TreatDataSet(x, y)
+    TreatDataSet(x, y, 4)
+
+def graph(x, y, a, b, mse, n):
+    print("Affichage du graphe...")
+    plt.scatter(x, y, color='blue', label='Data points')
+    x_line = [min(x), max(x)]
+    plt.plot(x_line, [a*xi + b for xi in x_line], color='red', label=f'Regression: y={a:.2f}x + {b:.2f}')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title(f'Linear Regression (Dataset {n}), MSE = {mse:2f}')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+    
 mainMenu()
