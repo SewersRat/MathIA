@@ -168,3 +168,104 @@ La couche cachée projette les données dans un espace de dimension supérieure 
 Conclusion
 Le perceptron simple est un classifieur linéaire. XOR est un problème non linéaire. C'est une incompatibilité fondamentale, indépendante du réglage des paramètres.
 La solution est d'ajouter une ou plusieurs couches cachées pour créer des représentations intermédiaires non linéaires. C'est le principe fondateur des réseaux de neurones profonds (deep learning) : empiler des transformations pour rendre séparables des données qui ne l'étaient pas.
+
+# TP — Perceptron & XOR
+ 
+## Table XOR
+ 
+| x₁ | x₂ | y (XOR) |
+|----|----|---------|
+| 0  | 0  | 0       |
+| 0  | 1  | 1       |
+| 1  | 0  | 1       |
+| 1  | 1  | 0       |
+ 
+---
+ 
+## Étape 1 — Le Perceptron Simple
+ 
+Un perceptron simple est composé de :
+- **Poids** : w₁, w₂
+- **Biais** : b
+- **Fonction d'activation** : fonction seuil (step function) → retourne 1 si la somme ≥ 0.5, sinon 0
+ 
+La prédiction est calculée ainsi :
+ 
+```
+ŷ = step(w₁·x₁ + w₂·x₂ + b)
+```
+ 
+La règle de mise à jour des poids est :
+ 
+```
+w  ← w  + lr × (y - ŷ) × x
+b  ← b  + lr × (y - ŷ)
+```
+ 
+---
+ 
+## Étape 2 — Observation
+ 
+Après entraînement (20 epochs, lr=0.1), le perceptron **ne converge pas**.  
+Il continue de faire des erreurs à chaque epoch et n'atteint jamais 0 erreur.
+ 
+### Pourquoi ?
+ 
+Le perceptron échoue car **XOR n'est pas linéairement séparable**.  
+Aucune combinaison de poids w₁, w₂ et b ne permet de trouver une droite qui sépare correctement les classes 0 et 1.
+ 
+---
+ 
+## Étape 3 — Analyse Graphique
+ 
+En traçant les 4 points sur le plan (x₁, x₂) :
+ 
+- **Classe 0** (points bleus) : (0,0) et (1,1) → sur une diagonale
+- **Classe 1** (points rouges) : (0,1) et (1,0) → sur l'autre diagonale
+ 
+Les deux classes forment un **damier**. Il est impossible de tracer une seule droite qui sépare les 0 des 1.  
+C'est la preuve visuelle que le problème XOR est **non linéairement séparable**.
+ 
+---
+ 
+## Questions du TP
+ 
+### 1. Pourquoi le perceptron simple échoue sur XOR ?
+ 
+Un perceptron simple ne peut représenter qu'une **frontière de décision linéaire** (une droite en 2D).  
+XOR n'est pas linéairement séparable : les points de classe 0 et de classe 1 sont disposés en damier, et aucune droite ne peut les séparer.  
+C'est une **limitation mathématique fondamentale**, démontrée par Minsky et Papert en 1969 dans leur livre *Perceptrons*.
+ 
+### 2. Que se passe-t-il si on augmente les itérations ou change le taux d'apprentissage ?
+ 
+**Rien ne change fondamentalement.**
+ 
+- Augmenter le nombre d'epochs : le perceptron continue d'osciller entre les mêmes erreurs, il ne converge pas.
+- Modifier le taux d'apprentissage : change la vitesse d'oscillation mais pas le résultat final.
+ 
+Le problème est **structurel**, pas paramétrique. On ne peut pas résoudre une limitation architecturale en jouant sur les hyperparamètres.
+ 
+### 3. Comment une couche cachée permet-elle de résoudre XOR ?
+ 
+Un réseau avec une couche cachée (MLP) peut apprendre des **frontières de décision non linéaires**.
+ 
+Concrètement, avec 2 neurones cachés, le réseau décompose XOR en deux opérations linéaires combinées :
+ 
+| Neurone caché | Ce qu'il apprend        |
+|---------------|-------------------------|
+| Neurone 1     | OR  → x₁ + x₂ ≥ 1      |
+| Neurone 2     | NAND → NON(x₁ ET x₂)   |
+| Sortie        | AND(OR, NAND) = **XOR** |
+ 
+La couche cachée **projette les données dans un espace de dimension supérieure** où elles deviennent linéairement séparables. Le neurone de sortie n'a plus qu'à apprendre une simple frontière linéaire dans cet espace transformé.
+ 
+---
+ 
+## Conclusion
+ 
+Le perceptron simple est un **classifieur linéaire**. XOR est un problème **non linéaire**. C'est une incompatibilité fondamentale, indépendante du réglage des paramètres.
+ 
+La solution est d'ajouter une ou plusieurs couches cachées pour créer des représentations intermédiaires non linéaires. C'est le principe fondateur des **réseaux de neurones profonds (deep learning)** : empiler des transformations pour rendre séparables des données qui ne l'étaient pas.
+ 
+---
+ 
